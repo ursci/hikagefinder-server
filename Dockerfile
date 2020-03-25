@@ -22,6 +22,7 @@ RUN apk add --no-cache --virtual build-deps \
     gcc \
     make \
     musl-dev \
+    postgresql-dev \
  && pip install -r requirements.txt \
  && apk del --purge build-deps
 
