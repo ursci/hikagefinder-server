@@ -11,12 +11,15 @@ services:
     build: .
     ports:
       - 8000:8000
+    depends_on:
+      - postgis
     environment:
       DB_HOST: postgis
       DB_PORT: 5432
       DB_PASS: ${DB_PASS}
       DB_USER: ${DB_USER}
       DB_NAME: ${DB_NAME}
+    entrypoint: [ "dockerize", "-timeout", "60s", "-wait", "tcp://postgis:5432" ]
     command: [ "uvicorn", "main:app", "--host", "0.0.0.0", "--reload" ]
     volumes:
       - ./src:/usr/src/shade_route_api/src
