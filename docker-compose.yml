@@ -6,3 +6,5 @@ services:
     ports:
       - 8000:8000
     command: [ "uvicorn", "main:app", "--host", "0.0.0.0", "--reload" ]
+    volumes:
+      - ./src:/usr/src/shade_route_api/src
