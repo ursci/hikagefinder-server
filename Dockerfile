@@ -14,9 +14,14 @@ RUN pipenv lock -r > requirements.txt
 FROM python:3.8-alpine
 
 ENV APP_HOME /usr/src/shade_route_api
+ENV DOCKERIZE_VERSION v0.6.1
 
 WORKDIR ${APP_HOME}
 COPY --from=builder ${APP_HOME}/requirements.txt ./
+
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
 RUN apk add --no-cache --virtual build-deps \
     gcc \
