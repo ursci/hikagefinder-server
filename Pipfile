@@ -12,3 +12,6 @@ uvicorn = "*"
 
 [requires]
 python_version = "3.8"
+
+[scripts]
+fmt = "black -t py38 ./src"
