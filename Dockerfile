@@ -18,9 +18,12 @@ ENV APP_HOME /usr/src/shade_route_api
 WORKDIR ${APP_HOME}
 COPY --from=builder ${APP_HOME}/requirements.txt ./
 
-RUN apk add --no-cache build-base \
+RUN apk add --no-cache --virtual build-deps \
+    gcc \
+    make \
+    musl-dev \
  && pip install -r requirements.txt \
- && apk del --purge build-base
+ && apk del --purge build-deps
 
 COPY ./src ./src
 
