@@ -9,6 +9,9 @@ black = "==19.10b0"
 [packages]
 fastapi = "*"
 uvicorn = "*"
+sqlalchemy = "*"
+psycopg2-binary = "*"
+geoalchemy2 = "*"
 
 [requires]
 python_version = "3.8"
