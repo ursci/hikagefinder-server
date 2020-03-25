@@ -1,10 +1,21 @@
 version: '3'
 
 services:
+  postgis:
+    image: postgis/postgis:12-3.0-alpine
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
   api:
     build: .
     ports:
       - 8000:8000
+    environment:
+      DB_HOST: postgis
+      DB_PASS: ${DB_PASS}
+      DB_USER: ${DB_USER}
+      DB_NAME: ${DB_NAME}
     command: [ "uvicorn", "main:app", "--host", "0.0.0.0", "--reload" ]
     volumes:
       - ./src:/usr/src/shade_route_api/src
