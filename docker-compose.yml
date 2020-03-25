@@ -13,6 +13,7 @@ services:
       - 8000:8000
     environment:
       DB_HOST: postgis
+      DB_PORT: 5432
       DB_PASS: ${DB_PASS}
       DB_USER: ${DB_USER}
       DB_NAME: ${DB_NAME}
