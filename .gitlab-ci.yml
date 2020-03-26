@@ -1,0 +1,11 @@
+stages:
+  - lint
+
+lint:
+  image: python:3.8-alpine
+  stage: lint
+  before_script:
+    - pip install pipenv
+    - pipenv install -d
+  script:
+    - pipenv run fmt --check
