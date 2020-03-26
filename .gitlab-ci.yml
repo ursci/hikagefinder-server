@@ -5,8 +5,6 @@ lint:
   image: python:3.8-alpine
   stage: lint
   before_script:
-    - apk add --no-cache --virtual build-deps gcc make musl-dev postgresql-dev
-    - pip install pipenv
-    - pipenv install -d
+    - pip install black
   script:
-    - pipenv run fmt --check
+    - black -t py38 --check ./src
