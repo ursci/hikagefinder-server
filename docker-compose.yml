@@ -2,7 +2,7 @@ version: '3'
 
 services:
   postgis:
-    image: postgis/postgis:12-3.0-alpine
+    image: pgrouting/pgrouting:12-3.0-2.6.3
     environment:
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_USER: ${DB_USER}
