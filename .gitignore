@@ -150,5 +150,7 @@ pip-selfcheck.json
 
 # End of https://www.gitignore.io/api/venv,macos,python
 
-# VSCode
+# Project Specific
 .vscode/
+.idea/
+shape_files/
