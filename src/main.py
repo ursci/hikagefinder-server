@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-from .models.health_check import HealthCheckResponse
-from .models.route import FoundRouteResponse, FindRouteRequest
+from models.health_check import HealthCheckResponse
+from models.route import FoundRouteResponse, FindRouteRequest
 
 app = FastAPI()
 
