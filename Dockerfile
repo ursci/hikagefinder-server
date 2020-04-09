@@ -32,6 +32,9 @@ RUN apk add --no-cache --virtual build-deps \
  && apk del --purge build-deps
 
 COPY ./src ./src
+COPY ./bin ./bin
+
+ENV PATH=${APP_HOME}/bin:${PATH}
 
 WORKDIR ${APP_HOME}/src
 
