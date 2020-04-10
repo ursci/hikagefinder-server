@@ -56,3 +56,30 @@ On this repository, the Gitlab CI has been enabled. When you push a commit on th
 ```bash
 $ pipenv run fmt
 ```
+
+### how to import shape file
+First, you convert a shape file into a sql file with this command. To run this command, you have to make a `shape_files` directory which includes shape files. 
+
+```bash
+$ mkdir shape_files
+$ cp foo.shp foo.dbf (and other related files) shape_files
+$ docker container run -it --rm --volume ${PWD}/shape_files:/shape_files pgrouting/pgrouting:12-3.0-master bash
+# apt update
+# apt install -y postgis
+# cd /shape_files
+# shp2pgsql -D -I -s 4612 SunExpo_shibuya_9_10_every5min.shp shade > SunExpo_shibuya_9_10_every5min.sql
+```
+
+Then, import the sql file into our database. Before importing, you have to add a line to the sql file.
+
+```sql
+SET CLIENT_ENCODING TO UTF8;
+SET STANDARD_CONFORMING_STRINGS TO ON;
+BEGIN;
+CREATE EXTENSION postgis;  # ADD THIS LINE ON LINE 4
+CREATE TABLE "shade" (gid serial,
+```
+
+```bash
+$ docker-compose exec postgis psql -U shade_route shade_route -f /shape_files/SunExpo_shibuya_9_10_every5min.sql
+```
