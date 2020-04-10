@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "062c08f2f9a97fa1b30544a316daca9e784a89da213086e6debe161611de2a38"
+            "sha256": "8d4871c430b3d65c93923b2e00566daf6f6727042edba3ba782d9343035464ff"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -119,13 +119,6 @@
             ],
             "version": "==1.4"
         },
-        "pyshp": {
-            "hashes": [
-                "sha256:e65c7f24d372b97d0920b864bbeb78322bb37b83f2606e2a2212631d5d51e5c0"
-            ],
-            "index": "pypi",
-            "version": "==2.1.0"
-        },
         "sqlalchemy": {
             "hashes": [
                 "sha256:7224e126c00b8178dfd227bc337ba5e754b197a3867d33b9f30dc0208f773d70"
@@ -223,10 +216,10 @@
         },
         "pathspec": {
             "hashes": [
-                "sha256:163b0632d4e31cef212976cf57b43d9fd6b0bac6e67c26015d611a647d5e7424",
-                "sha256:562aa70af2e0d434367d9790ad37aed893de47f1693e4201fd1d3dca15d19b96"
+                "sha256:7d91249d21749788d07a2d0f94147accd8f845507400749ea19c1ec9054a12b0",
+                "sha256:da45173eb3a6f2a5a487efba21f050af2b41948be6ab52b6a1e3ff22bb8b7061"
             ],
-            "version": "==0.7.0"
+            "version": "==0.8.0"
         },
         "regex": {
             "hashes": [

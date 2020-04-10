@@ -12,7 +12,6 @@ uvicorn = "*"
 sqlalchemy = "*"
 psycopg2-binary = "*"
 geoalchemy2 = "*"
-pyshp = "*"
 
 [requires]
 python_version = "3.8"
