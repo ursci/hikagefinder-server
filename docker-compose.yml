@@ -7,6 +7,8 @@ services:
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - ./shape_files:/shape_files
   api:
     build: .
     ports:
@@ -23,4 +25,3 @@ services:
     command: [ "uvicorn", "main:app", "--host", "0.0.0.0", "--reload" ]
     volumes:
       - ./src:/usr/src/shade_route_api/src
-      - ./bin:/usr/src/shade_route_api/bin
