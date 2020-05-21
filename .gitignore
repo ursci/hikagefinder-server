@@ -154,3 +154,4 @@ pip-selfcheck.json
 .vscode/
 .idea/
 shape_files/
+initial_sql/01*.sql
