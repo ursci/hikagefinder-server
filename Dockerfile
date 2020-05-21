@@ -27,14 +27,12 @@ RUN apk add --no-cache --virtual build-deps \
     gcc \
     make \
     musl-dev \
+ && apk add --no-cache --virtual run-deps \
     postgresql-dev \
  && pip install -r requirements.txt \
  && apk del --purge build-deps
 
 COPY ./src ./src
-COPY ./bin ./bin
-
-ENV PATH=${APP_HOME}/bin:${PATH}
 
 WORKDIR ${APP_HOME}/src
 
