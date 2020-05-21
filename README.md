@@ -72,14 +72,23 @@ $ docker container run -it --rm --volume ${PWD}/shape_files:/shape_files pgrouti
 
 Then, import the sql file into our database. Before importing, you have to add a line to the sql file.
 
+```bash
+$ vim ./shape_files/SunExpo_shibuya_9_10_every5min.sql
+```
+
 ```sql
 SET CLIENT_ENCODING TO UTF8;
 SET STANDARD_CONFORMING_STRINGS TO ON;
 BEGIN;
-CREATE EXTENSION postgis;  # ADD THIS LINE ON LINE 4
+CREATE EXTENSION postgis;  -- ADD THIS LINE ON LINE 4
+CREATE EXTENSION pgrouting; -- ADD THIS LINE ON LINE 5
 CREATE TABLE "shade" (gid serial,
 ```
 
+Copy the sql file as initialize script.
+
 ```bash
-$ docker-compose exec postgis psql -U shade_route shade_route -f /shape_files/SunExpo_shibuya_9_10_every5min.sql
+$ cp ./shape_files/SunExpo_shibuya_9_10_every5min.sql ./initial_sql/01_import_shade_rates.sql
 ```
+
+Finally, you just run the docker containers above way.
