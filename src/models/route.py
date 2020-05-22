@@ -10,7 +10,7 @@ class GeoJsonGeometry(BaseModel):
 
 
 class GeoJsonProperty(BaseModel):
-    shade_rate: float
+    sunlight_rate: float
     total_distance: float
     total_minutes: int
 
