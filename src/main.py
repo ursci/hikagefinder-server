@@ -25,5 +25,5 @@ async def health_check():
 
 @app.post("/find_route", response_model=FoundRouteResponse)
 async def find_route(request: FindRouteRequest, db: Session = Depends(get_db)):
-    result = search_path(db, request.departure_point, request.destination_point)
+    result = search_path(db, request.departure_point, request.destination_point, request.departure_time)
     return result
