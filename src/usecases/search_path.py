@@ -21,7 +21,9 @@ FROM shade_fromAtoB(:x1, :y1, :x2, :y2, :depart_at);
 WALK_SPEED = 80
 
 
-def search_path(db: Session, source: Point, destination: Point, departure_time: datetime):
+def search_path(
+    db: Session, source: Point, destination: Point, departure_time: datetime
+):
     # Find shortest path
     sql_statement = text(RAW_SHORTEST_QUERY)
     args = {
@@ -64,7 +66,7 @@ def search_path(db: Session, source: Point, destination: Point, departure_time: 
         "y1": source.lat,
         "x2": destination.lon,
         "y2": destination.lat,
-        "depart_at": departure_time.time().strftime('%H:%M:%S'),
+        "depart_at": departure_time.time().strftime("%H:%M:%S"),
     }
     recommended_destination_path = db.execute(sql_statement, args).first()
     # when the result is empty, return empty geojson
