@@ -9,12 +9,18 @@ from models.route import FoundRouteResponse
 
 
 RAW_SHORTEST_QUERY = """
-SELECT SUM(distance), ST_AsGeoJSON(ST_LineMerge(ST_Union(geom))) 
-FROM shortest_fromAtoB(:x1, :y1, :x2, :y2);
+SELECT
+    SUM(distance),
+    ST_AsGeoJSON(ST_LineMerge(ST_Union(geom))),
+    SUM(distance * rate) / SUM(distance)
+FROM shortest_fromAtoB(:x1, :y1, :x2, :y2, :depart_at);
 """.strip()
 
 RAW_RECOMMENDED_QUERY = """
-SELECT SUM(distance), ST_AsGeoJSON(ST_LineMerge(ST_Union(geom)))
+SELECT
+    SUM(distance),
+    ST_AsGeoJSON(ST_LineMerge(ST_Union(geom))),
+    SUM(distance * rate) / SUM(distance)
 FROM shade_fromAtoB(:x1, :y1, :x2, :y2, :depart_at);
 """.strip()
 
@@ -31,6 +37,7 @@ def search_path(
         "y1": source.lat,
         "x2": destination.lon,
         "y2": destination.lat,
+        "depart_at": departure_time.time().strftime("%H:%M:%S"),
     }
     nearest_destination_path = db.execute(sql_statement, args).first()
     # when the result is empty, return empty geojson
@@ -52,7 +59,7 @@ def search_path(
                     "coordinates": shortest_geojson["coordinates"],
                 },
                 "properties": {
-                    "shade_rate": 0.0,
+                    "sunlight_rate": nearest_destination_path[2],
                     "total_distance": shortest_distance,
                     "total_minutes": shortest_distance / WALK_SPEED,
                 },
@@ -88,7 +95,7 @@ def search_path(
                     "coordinates": recommended_geojson["coordinates"],
                 },
                 "properties": {
-                    "shade_rate": 0.0,
+                    "sunlight_rate": recommended_destination_path[2],
                     "total_distance": recommended_distance,
                     "total_minutes": recommended_distance / WALK_SPEED,
                 },
