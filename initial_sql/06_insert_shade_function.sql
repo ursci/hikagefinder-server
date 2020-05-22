@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION shade_fromAtoB(
   IN y1 numeric,
   IN x2 numeric,
   IN y2 numeric,
-  IN depart_at timestamp DEFAULT now(),
+  IN depart_at time DEFAULT now(),
   OUT seq INTEGER,
   OUT gid BIGINT,
   OUT cost double precision,
@@ -19,16 +19,23 @@ BEGIN
         FORMAT( $$
             WITH
             vertices AS (
-                SELECT * FROM public.shade_vertices_pgr
+                SELECT * FROM public.shibuya_roads_vertices_pgr
                 WHERE id IN (
-                    SELECT source FROM public.shade
+                    SELECT source FROM public.shibuya_roads
                     UNION
-                    SELECT target FROM public.shade)
+                    SELECT target FROM public.shibuya_roads)
             ),
             dijkstra AS (
                 SELECT *
                 FROM pgr_dijkstra(
-                    'SELECT gid as id, source, target, st_length(st_transform(geom, 3857)) as cost FROM shade',
+                    -- cost = length * (1 + sunlight rate)
+                    'SELECT shibuya_roads.id AS id, source, target, ST_Length(ST_Transform(geom, 3857)) * (1 + ABS(rate)) AS cost 
+                     FROM shibuya_roads 
+                     INNER JOIN (
+                       SELECT * FROM shibuya_shades
+                       WHERE time between time ''%5$s'' and time ''%5$s'' + interval ''4 minutes 59 seconds''
+                     ) AS shades 
+                     ON shibuya_roads.id = shades.id ORDER BY cost',
                     -- source
                     (SELECT id FROM vertices
                         ORDER BY the_geom <-> ST_SetSRID(ST_Point(%1$s, %2$s), 4612) LIMIT 1),
@@ -42,10 +49,10 @@ BEGIN
                 seq,
                 dijkstra.edge AS gid,
                 dijkstra.cost,
-                st_length(st_transform(shade.geom, 3857)),
-                shade.geom
-            FROM dijkstra, shade WHERE dijkstra.edge = shade.gid;$$,
-        x1,y1,x2,y2); -- %1 to %4 of the FORMAT function
+                st_length(st_transform(shibuya_roads.geom, 3857)),
+                shibuya_roads.geom
+            FROM dijkstra, shibuya_roads WHERE dijkstra.edge = shibuya_roads.id;$$,
+        x1,y1,x2,y2,depart_at); -- %1 to %4 of the FORMAT function
     --RAISE notice '%', final_query;
     RETURN QUERY EXECUTE final_query;
 END;
