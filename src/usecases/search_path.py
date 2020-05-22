@@ -18,6 +18,8 @@ SELECT SUM(distance), ST_AsGeoJSON(ST_LineMerge(ST_Union(geom)))
 FROM shade_fromAtoB(:x1, :y1, :x2, :y2, :depart_at);
 """.strip()
 
+WALK_SPEED = 80
+
 
 def search_path(db: Session, source: Point, destination: Point, departure_time: datetime):
     # Find shortest path
@@ -50,7 +52,7 @@ def search_path(db: Session, source: Point, destination: Point, departure_time: 
                 "properties": {
                     "shade_rate": 0.0,
                     "total_distance": shortest_distance,
-                    "total_minutes": shortest_distance,
+                    "total_minutes": shortest_distance / WALK_SPEED,
                 },
             }
         ],
@@ -86,7 +88,7 @@ def search_path(db: Session, source: Point, destination: Point, departure_time: 
                 "properties": {
                     "shade_rate": 0.0,
                     "total_distance": recommended_distance,
-                    "total_minutes": recommended_distance,
+                    "total_minutes": recommended_distance / WALK_SPEED,
                 },
             }
         ],
