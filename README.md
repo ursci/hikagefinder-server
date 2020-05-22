@@ -92,3 +92,13 @@ $ cp ./shape_files/SunExpo_shibuya_9_10_every5min.sql ./initial_sql/01_import_sh
 ```
 
 Finally, you just run the docker containers above way.
+
+## Memo
+### How to insert flatten data
+
+```sql
+CREATE TABLE shibuya_roads (id integer primary key, geom geometry(MultiLineString,4612));
+INSERT INTO shibuya_roads (SELECT id, geom FROM shade);
+CREATE TABLE shibuya_shades (id integer REFERENCES shibuya_roads(id), time time, rate float);
+COPY shibuya_shades (id, time, rate) FROM '/docker-entrypoint-initdb.d/sun_expo_flatten.csv' DELIMITERS ',' CSV HEADER;
+```
