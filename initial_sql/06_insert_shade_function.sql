@@ -8,7 +8,8 @@ CREATE OR REPLACE FUNCTION shade_fromAtoB(
   OUT gid BIGINT,
   OUT cost double precision,
   OUT distance double precision,
-  OUT geom geometry
+  OUT geom geometry,
+  OUT rate double precision
 )
 RETURNS SETOF record AS
 $BODY$
@@ -24,6 +25,10 @@ BEGIN
                     SELECT source FROM public.shibuya_roads
                     UNION
                     SELECT target FROM public.shibuya_roads)
+            ),
+            shades AS (
+                SELECT * FROM shibuya_shades
+                WHERE time between time '%5$s' and time '%5$s' + interval '4 minutes 59 seconds'
             ),
             dijkstra AS (
                 SELECT *
@@ -44,13 +49,15 @@ BEGIN
                         ORDER BY the_geom <-> ST_SetSRID(ST_Point(%3$s, %4$s), 4612) LIMIT 1),
                     false
                 )
+                INNER JOIN shades ON edge = shades.id
             )
             SELECT
                 seq,
                 dijkstra.edge AS gid,
                 dijkstra.cost,
                 st_length(st_transform(shibuya_roads.geom, 3857)),
-                shibuya_roads.geom
+                shibuya_roads.geom,
+                dijkstra.rate
             FROM dijkstra, shibuya_roads WHERE dijkstra.edge = shibuya_roads.id;$$,
         x1,y1,x2,y2,depart_at); -- %1 to %4 of the FORMAT function
     --RAISE notice '%', final_query;
