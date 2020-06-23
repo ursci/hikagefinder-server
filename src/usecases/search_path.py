@@ -12,7 +12,7 @@ RAW_SHORTEST_QUERY = """
 SELECT
     SUM(distance),
     ST_AsGeoJSON(ST_LineMerge(ST_Union(geom))),
-    SUM(distance * rate) / SUM(distance)
+    SUM(distance * ABS(rate)) / SUM(distance)
 FROM shortest_fromAtoB(:x1, :y1, :x2, :y2, :depart_at);
 """.strip()
 
@@ -20,7 +20,7 @@ RAW_RECOMMENDED_QUERY = """
 SELECT
     SUM(distance),
     ST_AsGeoJSON(ST_LineMerge(ST_Union(geom))),
-    SUM(distance * rate) / SUM(distance)
+    SUM(distance * ABS(rate)) / SUM(distance)
 FROM shade_fromAtoB(:x1, :y1, :x2, :y2, :depart_at);
 """.strip()
 
