@@ -33,7 +33,6 @@ class Point(BaseModel):
 
 class FindRouteRequest(BaseModel):
     departure_time: Optional[datetime]
-    arrival_time: Optional[datetime]
     departure_point: Point
     destination_point: Point
 
