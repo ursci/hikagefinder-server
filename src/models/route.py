@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 
 class GeoJsonGeometry(BaseModel):
@@ -35,6 +35,13 @@ class FindRouteRequest(BaseModel):
     departure_time: Optional[datetime]
     departure_point: Point
     destination_point: Point
+
+    @validator("departure_time")
+    def departure_time_validator(value: datetime):
+        if 8 <= value.hour <= 18:
+            return value
+        else:
+            raise ValueError("Given time is out of service.")
 
 
 class FoundRouteResponse(BaseModel):

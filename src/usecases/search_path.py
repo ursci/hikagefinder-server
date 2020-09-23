@@ -1,11 +1,11 @@
 from datetime import datetime
 import json
+from fastapi.exceptions import HTTPException
 from sqlalchemy.sql import text
 from sqlalchemy.orm import Session
 
 import schemas
 from models.route import Point
-from models.route import FoundRouteResponse
 
 
 RAW_SHORTEST_QUERY = """
@@ -24,12 +24,45 @@ SELECT
 FROM shade_fromAtoB(:x1, :y1, :x2, :y2, :depart_at);
 """.strip()
 
+# Find number of roads within about 500m
+RAW_NEAREST_ROAD_QUERY = """
+SELECT count(*)
+FROM shibuya_roads
+WHERE
+    ST_DWithin(geom, ST_SetSRID(ST_Point(:x1, :y1),4612), 0.005)
+""".strip()
+
 WALK_SPEED = 80
 
 
 def search_path(
     db: Session, source: Point, destination: Point, departure_time: datetime
 ):
+    # Validation for departure point
+    sql_statement = text(RAW_NEAREST_ROAD_QUERY)
+    args = {
+        "x1": source.lon,
+        "y1": source.lat,
+    }
+    num_of_near_roads_from_start_point = db.execute(sql_statement, args).fetchone()
+    if num_of_near_roads_from_start_point[0] == 0:
+        raise HTTPException(
+            status_code=422,
+            detail="Given departure point is far from service area (over 500m).",
+        )
+
+    # Validation for destination point
+    args = {
+        "x1": destination.lon,
+        "y1": destination.lat,
+    }
+    num_of_near_roads_from_dest_point = db.execute(sql_statement, args).fetchone()
+    if num_of_near_roads_from_dest_point[0] == 0:
+        raise HTTPException(
+            status_code=422,
+            detail="Given destination point is far from service area (over 500m).",
+        )
+
     # Find shortest path
     sql_statement = text(RAW_SHORTEST_QUERY)
     args = {
