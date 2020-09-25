@@ -48,7 +48,7 @@ def search_path(
     if num_of_near_roads_from_start_point[0] == 0:
         raise HTTPException(
             status_code=422,
-            detail="Given departure point is far from service area (over 500m).",
+            detail="Out of service area",
         )
 
     # Validation for destination point
@@ -60,7 +60,7 @@ def search_path(
     if num_of_near_roads_from_dest_point[0] == 0:
         raise HTTPException(
             status_code=422,
-            detail="Given destination point is far from service area (over 500m).",
+            detail="Out of service area",
         )
 
     # Find shortest path

@@ -41,7 +41,7 @@ class FindRouteRequest(BaseModel):
         if 8 <= value.hour <= 18:
             return value
         else:
-            raise ValueError("Given time is out of service.")
+            raise ValueError("Out of service time")
 
 
 class FoundRouteResponse(BaseModel):
