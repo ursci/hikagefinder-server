@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import List, Optional
+from fastapi.exceptions import HTTPException
 
 from pydantic import BaseModel, validator
 
@@ -41,7 +42,10 @@ class FindRouteRequest(BaseModel):
         if 8 <= value.hour <= 18:
             return value
         else:
-            raise ValueError("Out of service time")
+            raise HTTPException(
+                status_code=422,
+                detail="Out of service time",
+            )
 
 
 class FoundRouteResponse(BaseModel):
