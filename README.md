@@ -48,7 +48,7 @@ $ pipenv shell  # enable virtual python environment
 ```
 
 ### how to start the API server
-See above secton. Changes on your code will be applied automatically on the docker container without rebuilding or restarting.
+See above sectin. Changes on your code will be applied automatically on the docker container without rebuilding or restarting.
 
 ### how to run linter
 On this repository, the Gitlab CI has been enabled. When you push a commit on this repository, the CI checks code format automatically. If your code doesn't follow the code formatting rule, the CI will send a error to you. Before pushing the commits, you can re-format the codes with linter.
@@ -102,3 +102,22 @@ INSERT INTO shibuya_roads (SELECT id, geom FROM shade);
 CREATE TABLE shibuya_shades (id integer REFERENCES shibuya_roads(id), time time, rate float);
 COPY shibuya_shades (id, time, rate) FROM '/docker-entrypoint-initdb.d/sun_expo_flatten.csv' DELIMITERS ',' CSV HEADER;
 ```
+
+## Run in Local Environment
+Steps to do to run application in a local environment.
+
+* virtualenv -p python3.7 venv
+* source venv/bin/activate
+* pip install pipenv
+* pipenv lock -r > requirements.txt
+* pip install -r requirements.txt
+* run the application: 
+```uvicorn main:app --host 0.0.0.0 --reload```
+
+Configure PyCharm to run/debug the application
+
+* Create a new Configuration: `Run->Edit Configurations`
+* Set the Script Path to `uvicorn`
+* Set the Parameters to `main:app --host 0.0.0.0 --reload`
+* Set the Python Interpreter to `venv/bin/python`
+* Set the Working Directory to  `src`
