@@ -1,6 +1,6 @@
 FROM python:3.8-alpine as builder
 
-ENV APP_HOME /usr/src/shade_route_api
+ENV APP_HOME /usr/src/hikage_finder
 
 WORKDIR ${APP_HOME}
 
@@ -13,7 +13,7 @@ RUN pipenv lock -r > requirements.txt
 
 FROM python:3.8-alpine
 
-ENV APP_HOME /usr/src/shade_route_api
+ENV APP_HOME /usr/src/hikage_finder
 ENV DOCKERIZE_VERSION v0.6.1
 
 WORKDIR ${APP_HOME}
