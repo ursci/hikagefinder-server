@@ -7,8 +7,8 @@ from sqlalchemy.orm import sessionmaker
 
 DB_HOST = getenv("DB_HOST", "localhost")
 DB_PORT = getenv("DB_PORT", "5432")
-DB_PASS = getenv("DB_PASS", "")
-DB_USER = getenv("DB_USER", "shade_route")
+DB_PASS = getenv("DB_PASS", "postgres")
+DB_USER = getenv("DB_USER", "postgres")
 DB_NAME = getenv("DB_NAME", "shade_route")
 
 SQLALCHEMY_DATABASE_URL = (
