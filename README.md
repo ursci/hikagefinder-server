@@ -35,10 +35,15 @@ $ docker-compose up -d
 - pipenv
 
 ### Install developing requirements
-Example on macOS.
+Example on macOS:
 
 ```bash
 $ brew install python@3.8 pipenv
+```
+
+Example on Ubuntu:
+```bash
+$ sudo apt install pipenv
 ```
 
 ### Create virtual python environment and install packages
