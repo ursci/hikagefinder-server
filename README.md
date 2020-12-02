@@ -109,13 +109,11 @@ COPY shibuya_shades (id, time, rate) FROM '/docker-entrypoint-initdb.d/sun_expo_
 ## Run in Local Environment
 Steps to do to run application in a local environment.
 
-* virtualenv -p python3.7 venv
-* source venv/bin/activate
-* pip install pipenv
-* pipenv lock -r > requirements.txt
-* pip install -r requirements.txt
-* run the application: 
-```uvicorn main:app --host 0.0.0.0 --reload```
+* Install `pipenv`, for example with `sudo apt install pipenv` or `brew install pipenv`
+* Install dependencies with `pipenv install` 
+* Activate the virtual environment with `pipenv shell`
+* Run the application with `uvicorn main:app --host 0.0.0.0 --reload`
+* Leave the virtual environment with `exit`
 
 Configure PyCharm to run/debug the application
 
