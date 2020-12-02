@@ -27,7 +27,7 @@ FROM shade_fromAtoB(:x1, :y1, :x2, :y2, :depart_at);
 # Find number of roads within about 500m
 RAW_NEAREST_ROAD_QUERY = """
 SELECT count(*)
-FROM shibuya_roads
+FROM public.roads
 WHERE
     ST_DWithin(geom, ST_SetSRID(ST_Point(:x1, :y1),4612), 0.005)
 """.strip()

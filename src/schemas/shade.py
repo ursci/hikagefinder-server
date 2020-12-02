@@ -5,7 +5,7 @@ from database import Base
 
 
 class Shade(Base):
-    __tablename__ = "shade"
+    __tablename__ = "shades"
 
     gid = Column(Integer, primary_key=True, index=True)
     h_8_m_0 = Column(Float)
@@ -128,4 +128,4 @@ class Shade(Base):
     h_17_m_45 = Column(Float)
     h_17_m_50 = Column(Float)
     h_17_m_55 = Column(Float)
-    geom = Column(Geometry("MULTILINESTRING"))
+    geom = Column(Geometry("LINESTRING"))
