@@ -9,7 +9,7 @@ DB_HOST = getenv("DB_HOST", "localhost")
 DB_PORT = getenv("DB_PORT", "5432")
 DB_PASS = getenv("DB_PASS", "postgres")
 DB_USER = getenv("DB_USER", "postgres")
-DB_NAME = getenv("DB_NAME", "shade_route")
+DB_NAME = getenv("DB_NAME", "hikage_prod")
 
 SQLALCHEMY_DATABASE_URL = (
     f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
