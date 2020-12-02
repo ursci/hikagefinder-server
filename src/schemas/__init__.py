@@ -1,0 +1,1 @@
+from .shade import Shade
