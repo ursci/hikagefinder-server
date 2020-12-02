@@ -42,10 +42,14 @@ class FindRouteRequest(BaseModel):
         if 8 <= value.hour <= 18:
             return value
         else:
-            raise HTTPException(
-                status_code=422,
-                detail="Out of service time",
-            )
+            return value.replace(hour=8)
+            # Temporary fix to return a default route when there is no shade data
+            # Uncomment if routes should only returned during day time
+            #
+            # raise HTTPException(
+            #    status_code=422,
+            #    detail="Out of service time",
+            # )
 
 
 class FoundRouteResponse(BaseModel):
