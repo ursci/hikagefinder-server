@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_DB: ${DB_NAME}
     volumes:
-      - ./initial_sql:/docker-entrypoint-initdb.d
+      - ./setup:/docker-entrypoint-initdb.d
   api:
     build: .
     ports:
@@ -24,4 +24,4 @@ services:
     entrypoint: [ "dockerize", "-timeout", "60s", "-wait", "tcp://postgis:5432" ]
     command: [ "uvicorn", "main:app", "--host", "0.0.0.0", "--reload" ]
     volumes:
-      - ./src:/usr/src/shade_route_api/src
+      - ./src:/usr/src/hikage_finder/src

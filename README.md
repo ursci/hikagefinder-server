@@ -1,4 +1,4 @@
-# Shade Route API Server
+# Hikage Finder API Server
 
 ## How to start the API server
 
@@ -59,52 +59,42 @@ On this repository, the Gitlab CI has been enabled. When you push a commit on th
 $ pipenv run fmt
 ```
 
-### How to import shape file
-First, you convert a shape file into a sql file with this command. To run this command, you have to make a `shape_files` directory which includes shape files. 
+### How to import original shape file data
+First, you convert a shape file into a sql file with this command. To run this command, you have to make a `tmp` directory which includes shape files. 
 
 ```bash
-$ mkdir shape_files
-$ cp foo.shp foo.dbf (and other related files) shape_files
-$ docker container run -it --rm --volume ${PWD}/shape_files:/shape_files pgrouting/pgrouting:12-3.0-master bash
-# apt update
+$ mkdir -p tmp
+$ cp foo.shp foo.dbf (and other related files) ./tmp
+$ docker container run -it --rm --volume ${PWD}/tmp:/data pgrouting/pgrouting:13-3.0-3.1.1 bash
+# apt update 
 # apt install -y postgis
-# cd /shape_files
-# shp2pgsql -D -I -s 4612 SunExpo_shibuya_9_10_every5min.shp shade > SunExpo_shibuya_9_10_every5min.sql
+# cd /data
+# shp2pgsql -D -I -S -a -s 4326 path/to/foo.shp public.import > import.sql
 ```
 
-Then, import the sql file into our database. Before importing, you have to add a line to the sql file.
+Then create and setup the database where necessary: 
 
 ```bash
-$ vim ./shape_files/SunExpo_shibuya_9_10_every5min.sql
+$ createdb -U postgres hikage_prod
+$ psql -U postgres -d hikage_prod -f setup/00_create_role.sql
+$ psql -U postgres -d hikage_prod -f setup/01_enable_extensions.sql
+$ psql -U postgres -d hikage_prod -f setup/02_prepare_tables.sql
+$ psql -U postgres -d hikage_prod -f setup/03_prepare_views.sql
+$ psql -U postgres -d hikage_prod -f setup/04_insert_shortest_function.sql
+$ psql -U postgres -d hikage_prod -f setup/05_insert_shade_function.sql
 ```
 
-```sql
-SET CLIENT_ENCODING TO UTF8;
-SET STANDARD_CONFORMING_STRINGS TO ON;
-BEGIN;
-CREATE EXTENSION postgis;  -- ADD THIS LINE ON LINE 4
-CREATE EXTENSION pgrouting; -- ADD THIS LINE ON LINE 5
-CREATE TABLE "shade" (gid serial,
-```
-
-Copy the sql file as initialize script.
+In the next step import and process the converted data:
 
 ```bash
-$ cp ./shape_files/SunExpo_shibuya_9_10_every5min.sql ./initial_sql/01_import_shade_rates.sql
+$ psql -U postgres -d hikage_prod -f tmp/import.sql
+$ psql -U postgres -d hikage_prod -c "REFRESH MATERIALIZED VIEW public.shades"
+$ psql -U postgres -d hikage_prod -c "SELECT public.pgr_createTopology('import', 0.0000001, 'geom', 'gid')";
 ```
 
 Finally, you just run the docker containers above way.
 
 ## Memo
-
-### How to insert flatten data
-
-```sql
-CREATE TABLE shibuya_roads (id integer primary key, geom geometry(MultiLineString,4612));
-INSERT INTO shibuya_roads (SELECT id, geom FROM shade);
-CREATE TABLE shibuya_shades (id integer REFERENCES shibuya_roads(id), time time, rate float);
-COPY shibuya_shades (id, time, rate) FROM '/docker-entrypoint-initdb.d/sun_expo_flatten.csv' DELIMITERS ',' CSV HEADER;
-```
 
 ## Run in Local Environment
 Steps to do to run application in a local environment.
