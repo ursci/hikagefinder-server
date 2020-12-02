@@ -2,13 +2,14 @@ version: '3'
 
 services:
   postgis:
-    image: pgrouting/pgrouting:12-3.0-2.6.3
+    image: pgrouting/pgrouting:13-3.0-3.1.1
     environment:
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_DB: ${DB_NAME}
     volumes:
-      - ./initial_sql:/docker-entrypoint-initdb.d
+      - ./data:/data
+      - ./setup:/docker-entrypoint-initdb.d
   api:
     build: .
     ports:
@@ -24,4 +25,4 @@ services:
     entrypoint: [ "dockerize", "-timeout", "60s", "-wait", "tcp://postgis:5432" ]
     command: [ "uvicorn", "main:app", "--host", "0.0.0.0", "--reload" ]
     volumes:
-      - ./src:/usr/src/shade_route_api/src
+      - ./src:/usr/src/hikage_finder/src
