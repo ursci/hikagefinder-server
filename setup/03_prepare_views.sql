@@ -134,3 +134,5 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS public.shades AS
 ALTER MATERIALIZED VIEW public.shades OWNER TO ursci;
 
 REFRESH MATERIALIZED VIEW public.shades;
+
+CREATE INDEX IF NOT EXISTS "shades_time_idx" ON public.shades USING btree(time);

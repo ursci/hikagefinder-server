@@ -3,6 +3,7 @@
 # Edit at https://www.gitignore.io/?templates=venv,macos,python
 
 /tmp
+/data/*.sql
 
 ### macOS ###
 # General

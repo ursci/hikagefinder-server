@@ -92,9 +92,10 @@ $ psql -U postgres -d hikage_prod -f setup/05_insert_shade_function.sql
 In the next step import and process the converted data:
 
 ```bash
-$ psql -U postgres -d hikage_prod -f tmp/import.sql
-$ psql -U postgres -d hikage_prod -c "REFRESH MATERIALIZED VIEW public.shades"
-$ psql -U postgres -d hikage_prod -c "SELECT public.pgr_createTopology('import', 0.0000001, 'geom', 'gid')";
+$ psql -U ursci -d hikage_prod -f data/import.sql
+$ psql -U ursci -d hikage_prod -c "SELECT public.pgr_createTopology('import', 0.0000001, 'geom', 'gid')";
+$ psql -U ursci -d hikage_prod -c "REFRESH MATERIALIZED VIEW public.shades"
+$ psql -U ursci -d hikage_prod -c "ANALYZE"
 ```
 
 Finally, you just run the docker containers above way.

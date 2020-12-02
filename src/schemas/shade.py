@@ -5,7 +5,7 @@ from database import Base
 
 
 class Shade(Base):
-    __tablename__ = "shade"
+    __tablename__ = "shades"
 
     gid = Column(Integer, primary_key=True, index=True)
     h_8_m_0 = Column(Float)

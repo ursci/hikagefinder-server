@@ -127,5 +127,5 @@ CREATE TABLE IF NOT EXISTS public.import (
 
 ALTER TABLE public.import OWNER TO ursci;
 
-CREATE INDEX IF NOT EXISTS "import_geom_gist" ON public.import USING GIST ("geom");
+CREATE INDEX IF NOT EXISTS "import_geom_idx" ON public.import USING GIST ("geom");
 ANALYZE public.import;
