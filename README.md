@@ -77,6 +77,12 @@ $ docker container run -it --rm --volume ${PWD}/tmp:/data pgrouting/pgrouting:13
 # shp2pgsql -D -I -S -a -s 4326 path/to/foo.shp public.import > import.sql
 ```
 
+Alternatively download sample data:
+
+```bash
+wget -O data/import.sql https://raw.githubusercontent.com/ursci/hikagefinder-data/main/shibuya/SunExpo_shibuya_9_10_every5min.sql
+```
+
 Then create and setup the database where necessary: 
 
 ```bash
