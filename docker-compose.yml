@@ -2,7 +2,7 @@ version: '3'
 
 services:
   postgis:
-    image: pgrouting/pgrouting:13-3.0-3.1.1
+    build: './postgis'
     environment:
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_USER: ${DB_USER}

@@ -125,3 +125,7 @@ Configure PyCharm to run/debug the application
 * Set the Parameters to `main:app --host 0.0.0.0 --reload`
 * Set the Python Interpreter to `venv/bin/python`
 * Set the Working Directory to  `src`
+
+## License
+
+This program is free software. See [LICENSE](LICENSE) for more information.
